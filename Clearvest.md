@@ -47,3 +47,17 @@ For example, do not merely display an expected future amount. Show the current a
 
 Never imply that a projection is a guaranteed outcome.
 
+### 2.3 Confidence through transparency
+
+The platform should increase user confidence through understanding, not persuasion.
+
+It must make potential losses, liquidity restrictions, market volatility, uncertainty, opportunity costs, fees, and assumptions visible.
+
+Do not use fear-based messaging, artificial urgency, gamification that encourages excessive trading, misleading performance charts, or manipulative notifications.
+
+### 2.4 Data integrity before artificial intelligence
+
+Deterministic financial services must calculate financial values.
+
+The AI assistant may explain calculations and help users explore options, but it must not invent prices, balances, product attributes, historical returns, source citations, regulatory status, or personal financial facts.
+
