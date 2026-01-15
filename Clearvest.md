@@ -26,3 +26,24 @@ If a requested feature depends on a missing credential, unavailable API, commerc
 
 Every architectural, financial, and interface decision must follow these principles.
 
+### 2.1 Goals before products
+
+The primary user journey starts with questions such as:
+
+- What am I trying to achieve financially?
+- When do I need the money?
+- How much have I saved already?
+- How much can I realistically contribute?
+- How much uncertainty or loss can I withstand?
+- Which financial concepts should I understand before choosing an investment?
+
+Do not start with an overwhelming list of stocks, funds, market indicators, trading features, or financial jargon.
+
+### 2.2 Explain before recommending
+
+Every financial concept, projection, comparison, or permitted recommendation must explain the reasoning behind it in plain language.
+
+For example, do not merely display an expected future amount. Show the current amount, recurring contribution, timeframe, assumed growth rate, inflation assumption, fees, applicable taxes where reliably modeled, and uncertainty.
+
+Never imply that a projection is a guaranteed outcome.
+
