@@ -61,3 +61,15 @@ Deterministic financial services must calculate financial values.
 
 The AI assistant may explain calculations and help users explore options, but it must not invent prices, balances, product attributes, historical returns, source citations, regulatory status, or personal financial facts.
 
+### 2.5 User control
+
+Users must control their goals, financial data, account connections, consent, notifications, and any actions involving their money.
+
+The platform must never place an investment order simply because an AI conversation suggests it.
+
+---
+
+## 3. Scope and launch strategy
+
+Build toward the complete product, but deliver it in independently testable phases.
+
