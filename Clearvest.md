@@ -73,3 +73,28 @@ The platform must never place an investment order simply because an AI conversat
 
 Build toward the complete product, but deliver it in independently testable phases.
 
+### Phase A: Working planning and education platform
+
+Implement:
+
+- Secure user authentication and profile management.
+- Goal-based financial onboarding.
+- Personal financial planning tools.
+- Financial literacy and plain-language explanations.
+- Investment-category education.
+- Investment comparisons using verified or explicitly simulated data.
+- Scenario analysis and projection calculators.
+- A source-grounded conversational finance assistant.
+- A responsive dashboard.
+- User-entered financial information.
+- Clearly labeled simulated accounts, holdings, instruments, prices, and performance.
+- Privacy controls, testing, and deployment documentation.
+
+This phase must work without brokerage credentials or paid financial-data access.
+
+### Phase B: Verified market-data integrations
+
+Add real market-data providers only after confirming their official documentation, commercial availability, supported instruments, pricing, permitted uses, and display or redistribution rights.
+
+Implement a provider adapter, quote freshness tracking, historical data where licensed, instrument metadata, corporate-action handling where applicable, and failure recovery.
+
