@@ -122,3 +122,47 @@ The application must work correctly when Phases B through E are unavailable.
 
 ---
 
+## 4. Regulatory, legal, and operating constraints
+
+This is a financial application. Treat regulatory compliance as an explicit launch dependency rather than assuming that code alone makes a feature permissible.
+
+Before implementing or activating a regulated workflow, research the latest official material available at implementation time. Do not rely solely on old tutorials, third-party summaries, or model memory.
+
+At minimum, investigate the applicability of:
+
+- SEBI Investment Advisers Regulations.
+- SEBI Research Analysts Regulations.
+- Applicable stock-broker and exchange requirements, including current order-execution and API-related rules.
+- Applicable algorithmic-trading requirements if any automation or strategy execution is contemplated.
+- RBI requirements relevant to the selected Account Aggregator operating model.
+- India's Digital Personal Data Protection Act and Rules, including the applicable phased enforcement timeline.
+- Applicable KYC, AML, cybersecurity, consumer protection, recordkeeping, grievance handling, disclosure, and tax requirements.
+- Data and content licensing conditions associated with the selected market-data and financial-information providers.
+
+Maintain a regulatory decision register containing the feature, jurisdiction, applicable rule or question, official source, review date, accountable reviewer, required approval, implementation status, and evidence of approval.
+
+For every regulated or externally dependent feature, use an explicit state such as:
+
+`not_reviewed`, `review_required`, `partner_required`, `approval_pending`, `approved`, `disabled`.
+
+These states must have real enforcement effects on the server. Hiding a button in the frontend is not sufficient.
+
+### Mandatory restrictions
+
+1. Do not offer personalized securities advice, specific buy/sell recommendations, regulated research, discretionary portfolio management, or similar services before the applicable operating model has been reviewed and authorized.
+2. Do not represent this software as a registered investment adviser, broker, distributor, or other regulated entity unless that status is verified for the actual operating entity.
+3. Do not assume that an Account Aggregator integration is automatically available to any software company. Verify eligibility, consent requirements, partner agreements, and the intended financial-information-user role.
+4. Do not treat an Account Aggregator connection as a payment or transaction-execution mechanism.
+5. Do not assume broker API credentials permit a third party to offer brokerage services to retail customers. Verify the specific partner permissions and use restrictions.
+6. Do not scrape exchange websites or republish financial market data unless the source and permitted use have been established.
+7. Do not claim that a free or delayed-data endpoint may be used commercially merely because it is technically accessible.
+8. Do not hold, pool, transfer, or custody user funds as part of the initial application.
+9. Do not implement autonomous live trading, investment execution from AI conversations, or unattended trading strategies.
+10. Do not use a general disclaimer as a substitute for the required legal, licensing, registration, or partner approval.
+
+Create a feature-eligibility matrix that identifies what can be shipped immediately, what requires an external provider, and what requires formal approval.
+
+The application must fail closed for any capability that has not satisfied its required gates.
+
+---
+
