@@ -98,3 +98,27 @@ Add real market-data providers only after confirming their official documentatio
 
 Implement a provider adapter, quote freshness tracking, historical data where licensed, instrument metadata, corporate-action handling where applicable, and failure recovery.
 
+### Phase C: Authorized financial-account connectivity
+
+Add account connections only through verified and authorized interfaces. Depending on eligibility, product design, and partner approval, these may include suitable Account Aggregator ecosystem integrations or authorized broker integrations.
+
+Begin with read-only access wherever possible. Implement explicit consent, token protection, connection status, permission revocation, synchronization, reconciliation, and clear source attribution.
+
+Never request a user's bank password, broker password, OTP, or TOTP through the application's own forms to imitate a provider login.
+
+### Phase D: Personalized investment guidance
+
+Enable regulated personalized investment recommendations only after the applicable Indian regulatory requirements, operating model, required registration, disclosures, and any qualified partner arrangements have been reviewed and approved.
+
+Do not assume that calling something “educational,” “AI-generated,” or “not financial advice” exempts it from applicable requirements.
+
+### Phase E: Authorized investing and brokerage workflows
+
+Support broker-connected portfolio management and trade execution only after confirming the selected provider's official capabilities, commercial permissions, user authorization flow, and applicable legal and regulatory requirements.
+
+Until then, trading must remain disabled, not simulated as a successful real order. Use a separate, clearly labeled paper-trading environment when demonstrating an order lifecycle.
+
+The application must work correctly when Phases B through E are unavailable.
+
+---
+
