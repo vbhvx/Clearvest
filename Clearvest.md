@@ -166,3 +166,13 @@ The application must fail closed for any capability that has not satisfied its r
 
 ---
 
+## 5. Target users and product outcomes
+
+Design for Indian retail investors with different levels of financial knowledge.
+
+### Primary persona: the first-time investor
+
+This user wants to start investing but does not understand the terminology, products, processes, or risks.
+
+They need a straightforward introduction, goal-based planning, transparent examples, and confidence to ask basic questions without feeling judged.
+
