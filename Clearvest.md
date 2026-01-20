@@ -176,3 +176,13 @@ This user wants to start investing but does not understand the terminology, prod
 
 They need a straightforward introduction, goal-based planning, transparent examples, and confidence to ask basic questions without feeling judged.
 
+### Secondary persona: the emerging investor
+
+This user already has savings or investments but struggles to connect them to personal goals, understand allocation, compare costs and risks, or see their overall financial position.
+
+### Advanced persona: the self-directed investor
+
+This user wants reliable market information, portfolio visibility, investment comparisons, detailed scenarios, and eventually broker-connected workflows.
+
+Do not force every user through the same level of complexity. Use progressive disclosure so beginners see a simple explanation first and experienced users can access more detailed information.
+
