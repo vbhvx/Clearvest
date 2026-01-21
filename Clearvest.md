@@ -186,3 +186,22 @@ This user wants reliable market information, portfolio visibility, investment co
 
 Do not force every user through the same level of complexity. Use progressive disclosure so beginners see a simple explanation first and experienced users can access more detailed information.
 
+### Core success measures
+
+Track product outcomes such as:
+
+- Users who successfully create a meaningful financial goal.
+- Users who complete a planning scenario.
+- Users who can correctly explain key trade-offs in usability tests.
+- Users who return to review progress.
+- Reliability and correctness of financial calculations.
+- Quote freshness and provider error rates.
+- Successful reconciliation of connected financial information.
+- User understanding of risks and assumptions.
+
+Do not optimize solely for trading frequency, order volume, or the amount of money users invest.
+
+---
+
+## 6. Functional requirements
+
