@@ -275,3 +275,37 @@ Do not silently treat an annual rate as a monthly rate or assume that an annual 
 
 For any estimate that cannot be supported by available information, return an explicit uncertainty or insufficient-data status.
 
+### 6.4 Investment discovery and education
+
+Provide an educational discovery experience organized around user goals, investment concepts, and product characteristics rather than hype.
+
+Potential investment categories include equities, mutual funds, ETFs, fixed-income instruments, and government securities, but only show actual instruments or products when their attributes and availability have been verified for the supported market.
+
+The system must not imply that every product is available to every user.
+
+Each instrument or product detail page should support relevant fields such as:
+
+- Name, identifier, issuer, and category.
+- Market and currency.
+- Official documentation or source.
+- Current or most recent verified value, if available.
+- Price timestamp and whether the data is real-time, delayed, historical, or simulated.
+- Liquidity considerations.
+- Relevant expenses, charges, or fees where verified.
+- Relevant risks and limitations.
+- Source and last-updated time.
+
+Do not hardcode a list of instruments and pretend it is a live security master.
+
+### 6.5 Investment comparison
+
+Implement a comparison workflow that explains meaningful differences between available alternatives.
+
+Compare relevant characteristics, including costs, liquidity, diversification, volatility, time horizon, complexity, and downside scenarios when reliable information exists.
+
+Do not rank products using unexplained scores or promote a product because a provider pays the platform.
+
+If data is missing or definitions differ, display that limitation instead of manufacturing a comparable value.
+
+Security-specific comparisons and personalized rankings must respect the regulatory approval gates established earlier.
+
