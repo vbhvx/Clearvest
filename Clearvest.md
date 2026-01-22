@@ -205,3 +205,73 @@ Do not optimize solely for trading frequency, order volume, or the amount of mon
 
 ## 6. Functional requirements
 
+### 6.1 Authentication and onboarding
+
+Implement secure account creation, sign-in, sign-out, password recovery, session management, and appropriate protection for financial functions.
+
+Support stronger authentication controls for connected accounts and sensitive actions, including MFA or passkeys where appropriate.
+
+Onboarding should collect only data needed for the stated feature.
+
+The user should be able to provide:
+
+- Country and residence jurisdiction where relevant.
+- Preferred language and currency.
+- Financial goals and target dates.
+- Current savings, assets, liabilities, and recurring contributions, when relevant.
+- Existing investments, optionally entered manually.
+- Approximate income and essential expenses, when needed for a planning calculation.
+- Investment knowledge, time horizon, and loss tolerance where relevant.
+
+Explain why financial information is requested and how it will be used.
+
+Allow users to skip optional fields. If a calculation requires missing inputs, ask for them or clearly state which assumptions are being used.
+
+Do not equate a simple risk questionnaire with a professionally validated or legally sufficient risk-profiling process.
+
+### 6.2 Goal management
+
+Support creation, editing, archiving, and tracking of user-defined goals.
+
+Provide useful goal templates, including:
+
+- Emergency savings.
+- Higher education.
+- Home purchase.
+- Retirement.
+- A major planned expense.
+- Long-term wealth building.
+- A custom goal.
+
+Each goal should store the target amount, currency, creation date, target date, current allocated amount, planned recurring contribution, assumptions, status, and calculation version where applicable.
+
+Support inflation-adjusted targets when the user elects to use an inflation assumption.
+
+Display a breakdown of what is known, what is assumed, and what remains uncertain.
+
+Users must be able to update their goals without losing historical scenario results.
+
+### 6.3 Financial planning engine
+
+Build a deterministic planning engine that answers questions such as:
+
+- How much would I need to save each month to reach my goal?
+- How much might I accumulate under different return assumptions?
+- What happens if I contribute less for the next six months?
+- How does inflation change the future cost of a goal?
+- What happens if the goal date changes?
+- What contribution would be required under a more conservative scenario?
+- How much of the projected amount comes from my own contributions versus assumed growth?
+
+Support baseline, favorable, and adverse scenarios, but explain that these are illustrative scenarios rather than probabilities or guarantees unless a separate, validated statistical model supports that interpretation.
+
+Make assumptions editable. Never hide the return or inflation assumptions behind a single opaque number.
+
+Use tested formulas for future value, present value, periodic contributions, target contributions, annual-to-periodic rate conversion, and date-sensitive projections.
+
+Document the formulas and calculation conventions. Handle the first and last contribution periods consistently.
+
+Do not silently treat an annual rate as a monthly rate or assume that an annual nominal rate is equivalent to an annual effective rate.
+
+For any estimate that cannot be supported by available information, return an explicit uncertainty or insufficient-data status.
+
