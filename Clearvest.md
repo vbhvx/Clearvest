@@ -309,3 +309,42 @@ If data is missing or definitions differ, display that limitation instead of man
 
 Security-specific comparisons and personalized rankings must respect the regulatory approval gates established earlier.
 
+### 6.6 Scenario simulator
+
+Create an interactive calculator that lets users change assumptions and immediately see how a scenario changes.
+
+Support variables such as:
+
+- Initial contribution.
+- Recurring contribution.
+- Contribution frequency.
+- Time horizon.
+- Assumed nominal return.
+- Inflation.
+- Applicable fee assumptions.
+- Optional taxes when a reviewed and versioned model is available.
+
+Show an understandable calculation breakdown.
+
+Use charts for scenario comparisons, but accompany each chart with clear labels and accessible text. Avoid misleading axes or visually exaggerating small differences.
+
+Mark modeled outputs as estimates. Distinguish future nominal values from inflation-adjusted values.
+
+### 6.7 Portfolio visibility
+
+Provide a consolidated view of investments that the user has added manually, imported, or obtained through an authorized connection.
+
+Show provenance for each item:
+
+- User-entered.
+- Imported from a file.
+- Reported by a financial provider.
+- Derived by the application's calculation engine.
+- Simulated demonstration data.
+
+Track the timestamp of the source data.
+
+Separate confirmed facts from estimated values and derived metrics. For example, portfolio value based on the latest quote is not the same as cash that is currently available to withdraw.
+
+Where holdings, cost basis, corporate actions, fees, dividends, settlement, or transaction histories are incomplete, disclose the limitation. Do not claim exact profit, return, tax liability, or holdings accuracy when the underlying data cannot support it.
+
