@@ -348,3 +348,54 @@ Separate confirmed facts from estimated values and derived metrics. For example,
 
 Where holdings, cost basis, corporate actions, fees, dividends, settlement, or transaction histories are incomplete, disclose the limitation. Do not claim exact profit, return, tax liability, or holdings accuracy when the underlying data cannot support it.
 
+### 6.8 Financial account connections
+
+Build a provider-adapter framework rather than embedding the application's core logic around one institution.
+
+For each provider, define:
+
+- Supported accounts, data types, and instruments.
+- Consent and authorization flow.
+- Authentication requirements.
+- Data retrieval and update mechanisms.
+- Rate limits and provider errors.
+- Data timestamp and freshness rules.
+- Token lifecycle and revocation behavior.
+- Retention, caching, and storage restrictions.
+- Contract tests and sandbox availability.
+
+A connected account must be traceable to a valid user authorization and provider identity.
+
+Users must be able to see which connections are active, what permissions they granted, when data was last synchronized, and how to revoke access.
+
+Never claim an account is connected because a demo response was returned.
+
+### 6.9 Brokerage integration
+
+Create a separate broker adapter with capabilities that may include account information, holdings, positions, order previews, order placement, order status, modifications, cancellations, and execution reports — but implement only capabilities that the selected provider officially supports and has authorized for the actual use case.
+
+The architecture must support the complete order lifecycle:
+
+`draft → validated → previewed → submitted → acknowledged → partially_filled → filled`
+
+Other valid states include `rejected`, `cancel_pending`, `cancelled`, `expired`, `unknown`, and `reconciliation_required`.
+
+The integration must account for asynchronous status changes, provider timeouts, duplicate webhooks, partial fills, rejected orders, cancellation races, stale quotes, and reconciliation mismatches.
+
+Before a real order is submitted:
+
+1. Confirm that all regulatory, provider, user-authorization, and operational gates are enabled.
+2. Validate the account, instrument, permitted quantity, order parameters, and applicable restrictions.
+3. Show an order preview and relevant fees or warnings that are supported by data.
+4. Require an explicit user confirmation for that specific order.
+5. Send the request from the secure backend, never directly from the browser with an embedded provider secret.
+6. Use idempotency controls or an equivalent documented mechanism to prevent accidental duplicate submissions.
+7. Record the provider request reference and lifecycle events.
+8. Reconcile the resulting order state against authoritative provider data.
+
+**Never blindly retry an order submission after an ambiguous timeout.** First determine whether the original request reached the provider. If the state cannot be established, mark it as unknown and require reconciliation before another submission.
+
+The AI assistant must not possess a tool that can silently bypass this workflow.
+
+Until the real integration is approved and configured, display a sandbox mode or disabled state. Never imply that a paper order was sent to a real exchange.
+
