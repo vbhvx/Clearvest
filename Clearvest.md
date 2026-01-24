@@ -413,3 +413,31 @@ Any future payment or investment automation requires separate review, explicit a
 
 The product must support all three financial-data modes through explicit configuration.
 
+### Mode A: Simulated data
+
+Create deterministic, realistic demo fixtures.
+
+Every simulated account, balance, instrument, quote, holding, portfolio event, and transaction must carry a source marker and a visible demo label.
+
+Seeded data must never be mixed silently into a user's live portfolio.
+
+Provide an easy way to reset the demo dataset without damaging real user data.
+
+### Mode B: Verified live market data
+
+Use a registered provider adapter.
+
+Before enabling it, verify the actual provider, documentation, supported instruments, timestamp semantics, data freshness, commercial permissions, redistribution rights, historical coverage, and pricing.
+
+Store the source, provider timestamp, ingestion timestamp, session status, and delay status for market observations.
+
+Never turn an expired quote into a fresh-looking real-time quote. Display stale or unavailable status prominently.
+
+### Mode C: Authorized financial-account connections
+
+Connect through approved integration flows that use the appropriate consent, authorization, access controls, and partner configuration.
+
+Do not use browser automation, screen scraping, credential collection, or unofficial interfaces to imitate an authorized connection.
+
+Where the integration provides only periodic snapshots, do not represent them as live updates.
+
