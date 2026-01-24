@@ -399,3 +399,17 @@ The AI assistant must not possess a tool that can silently bypass this workflow.
 
 Until the real integration is approved and configured, display a sandbox mode or disabled state. Never imply that a paper order was sent to a real exchange.
 
+### 6.10 Recurring contributions and reminders
+
+Support user-configured saving or contribution reminders, goal reviews, and important dates.
+
+Do not automatically initiate a recurring payment, bank transfer, investment order, or SIP merely because the user enabled a reminder.
+
+Any future payment or investment automation requires separate review, explicit authorization, valid provider capabilities, and the applicable controls.
+
+---
+
+## 7. Data-source strategy and source of truth
+
+The product must support all three financial-data modes through explicit configuration.
+
