@@ -441,3 +441,28 @@ Do not use browser automation, screen scraping, credential collection, or unoffi
 
 Where the integration provides only periodic snapshots, do not represent them as live updates.
 
+### Provider registry
+
+Create a provider registry with fields such as:
+
+`provider_id`, `provider_type`, `display_name`, `jurisdiction`, `supported_products`, `supported_data_types`, `authorization_status`, `license_status`, `official_docs_url`, `enabled_capabilities`, `freshness_policy`, `rate_limits`, `data_retention_policy`, `last_health_check_at`, and `disabled_reason`.
+
+A provider must not be activated in production unless its required fields, credentials, permissions, and tests are complete.
+
+### Data-provenance contract
+
+Each externally obtained financial value must carry enough metadata to establish:
+
+- The source.
+- The subject or instrument.
+- The observation time, if provided.
+- The ingestion time.
+- The currency and unit.
+- Any known delay.
+- Whether the value is raw, adjusted, calculated, or estimated.
+- The validity or freshness status.
+
+If an upstream provider changes its response format or stops providing a field, fail validation rather than silently substituting a fabricated value.
+
+---
+
