@@ -466,3 +466,19 @@ If an upstream provider changes its response format or stops providing a field, 
 
 ---
 
+## 8. Financial calculation correctness
+
+Financial correctness is a core system requirement, not a presentation detail.
+
+### Numeric precision
+
+- Never use JavaScript floating-point arithmetic for money, quantities, prices, costs, fees, or percentage calculations requiring financial precision.
+- Use PostgreSQL `NUMERIC` columns or another deliberate decimal representation.
+- Use a decimal arithmetic library such as `decimal.js` in application calculations.
+- Centralize money, quantity, price, rate, and rounding operations in tested domain services.
+- Use currency metadata and instrument-specific precision rules.
+- Apply rounding only at documented boundaries.
+- Keep unrounded calculation values internally where needed to avoid compounding rounding error.
+
+Do not assume every currency has two minor-unit digits or that every instrument quantity is an integer.
+
