@@ -482,3 +482,19 @@ Financial correctness is a core system requirement, not a presentation detail.
 
 Do not assume every currency has two minor-unit digits or that every instrument quantity is an integer.
 
+### Currency handling
+
+Represent every monetary value with an explicit ISO currency code.
+
+Never add amounts in different currencies without an explicit conversion operation.
+
+FX conversions must identify the exchange-rate source, quote convention, timestamp, conversion direction, and any fees or spread assumptions.
+
+Separate the currency in which the user is planning a goal, the instrument's trading currency, and the currency in which a portfolio is displayed.
+
+### Calculation provenance
+
+Every projection should record its inputs, formula version, assumption set, currency, calculation timestamp, and output.
+
+Calculation results must be reproducible from their saved inputs.
+
