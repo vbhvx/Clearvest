@@ -498,3 +498,30 @@ Every projection should record its inputs, formula version, assumption set, curr
 
 Calculation results must be reproducible from their saved inputs.
 
+### Returns and performance
+
+Distinguish concepts such as:
+
+- Price return.
+- Total return where relevant data is available.
+- Unrealized gain or loss.
+- Realized gain or loss.
+- Cash flow.
+- Portfolio valuation.
+- Time-weighted return.
+- Money-weighted return.
+
+Implement a metric only when the required data and methodology are available. Clearly label estimates and incomplete results.
+
+Do not present an account balance as total net worth or an unverified portfolio valuation as a guaranteed liquidation value.
+
+### Tax-related outputs
+
+Do not make tax calculations that depend on missing jurisdiction, product classification, purchase lots, holding periods, fees, or tax-rule versions.
+
+Any supported tax computation must be based on reviewed jurisdiction-specific rules, effective dates, tested cases, and explicit assumptions.
+
+Do not make unsupported claims that a product is tax-free, tax-efficient, or suitable for a particular tax situation.
+
+---
+
