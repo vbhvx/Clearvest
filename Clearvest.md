@@ -525,3 +525,40 @@ Do not make unsupported claims that a product is tax-free, tax-efficient, or sui
 
 ---
 
+## 9. Recommended technical architecture
+
+Inspect the repository before choosing or changing frameworks. Preserve viable existing infrastructure. If the repository is empty, use the following default architecture.
+
+### Frontend
+
+- Next.js using the App Router.
+- React and TypeScript with strict type checking.
+- Tailwind CSS.
+- Accessible, reusable UI components.
+- Validated forms and clear error states.
+- Responsive layouts for mobile, tablet, and desktop.
+- Lightweight charts that represent financial information accurately.
+- A shared typed client for backend APIs.
+
+### Backend
+
+Use a TypeScript-based modular backend with well-defined APIs and domain boundaries.
+
+A practical starting point is either a well-structured Next.js backend or a separate Node.js API service using a framework such as Fastify. Choose one primary request-handling architecture based on the existing codebase; avoid duplicating business logic across both.
+
+Separate financial calculations, investment domain logic, AI services, external providers, and order execution from UI components.
+
+Use:
+
+- PostgreSQL as the primary persistent database.
+- A migration-based schema workflow.
+- A tested ORM or query layer.
+- Server-side runtime validation, using Zod or an equivalent schema validator.
+- OpenAPI documentation for public API contracts.
+- A background worker and queue where long-running synchronization or ingestion requires it.
+- Redis only for justified caching, job queues, or rate-limiting requirements.
+- Encrypted object storage for files where needed and permitted.
+- Centralized error handling and structured application logging.
+
+Keep the initial architecture a modular monolith unless measured needs justify additional services.
+
