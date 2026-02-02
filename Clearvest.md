@@ -589,3 +589,29 @@ Keep modules independently testable and define clear interfaces between them.
 
 ---
 
+## 10. Database schema
+
+Design and implement normalized PostgreSQL migrations with appropriate constraints, indexes, foreign keys, and ownership checks.
+
+The following table groups define the minimum conceptual schema. Add supporting tables where necessary, but document every important extension.
+
+### Identity and privacy
+
+**`users`**
+
+`id`, `email`, `email_verified_at`, `status`, `created_at`, `updated_at`.
+
+**`user_profiles`**
+
+`user_id`, `country_code`, `preferred_currency`, `preferred_locale`, `timezone`, optional planning-profile fields, `created_at`, `updated_at`.
+
+Keep sensitive profiling information separate from public account details.
+
+**`consents`**
+
+`id`, `user_id`, `provider_id`, `purpose`, `data_categories`, `consent_version`, `granted_at`, `expires_at`, `revoked_at`, `status`, `provider_reference`.
+
+**`privacy_requests`**
+
+`id`, `user_id`, `request_type`, `status`, `requested_at`, `completed_at`, `audit_reference`.
+
