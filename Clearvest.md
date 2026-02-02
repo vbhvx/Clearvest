@@ -562,3 +562,30 @@ Use:
 
 Keep the initial architecture a modular monolith unless measured needs justify additional services.
 
+### AI infrastructure
+
+Build the AI layer as an isolated module with an interchangeable model provider, structured responses, retrieval and citation handling, evaluation tests, and strict tool permissions.
+
+Do not couple core money movement, financial calculations, authentication, or order-state changes to an LLM provider.
+
+### Architectural modules
+
+Organize the application around the following domains:
+
+1. Identity and user profiles.
+2. Goals and personal financial planning.
+3. Financial calculation engine.
+4. Instrument and market-data registry.
+5. Investment education and content.
+6. Portfolio and holdings.
+7. Financial-account connections.
+8. Brokerage and order lifecycle.
+9. AI finance assistant.
+10. Notifications.
+11. Consent, privacy, and audit.
+12. Provider administration and system health.
+
+Keep modules independently testable and define clear interfaces between them.
+
+---
+
