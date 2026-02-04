@@ -615,3 +615,49 @@ Keep sensitive profiling information separate from public account details.
 
 `id`, `user_id`, `request_type`, `status`, `requested_at`, `completed_at`, `audit_reference`.
 
+### Goals and planning
+
+**`financial_goals`**
+
+`id`, `user_id`, `name`, `goal_type`, `target_amount`, `target_currency`, `target_date`, `current_amount`, `contribution_amount`, `contribution_frequency`, `inflation_assumption`, `status`, `created_at`, `updated_at`.
+
+**`planning_scenarios`**
+
+`id`, `user_id`, `goal_id`, `scenario_name`, `input_snapshot`, `assumption_snapshot`, `formula_version`, `output_snapshot`, `currency`, `created_at`.
+
+Store sufficient inputs to reproduce the calculation. Validate structured JSON snapshots with versioned schemas.
+
+**`risk_assessments`**
+
+`id`, `user_id`, `assessment_version`, `responses`, `result`, `completion_status`, `created_at`.
+
+Do not treat an assessment result as permission to provide regulated advice.
+
+### Investment instruments and data
+
+**`providers`**
+
+`id`, `provider_type`, `name`, `country_code`, `official_docs_url`, `status`, `capabilities`, `licensing_metadata`, `configuration_metadata`.
+
+**`instruments`**
+
+`id`, `provider_id`, `provider_instrument_id`, `symbol`, `name`, `instrument_type`, `exchange`, `country_code`, `trading_currency`, `quantity_precision`, `price_precision`, `status`, `metadata`, `updated_at`.
+
+Use stable instrument identities and avoid relying on symbol alone as a global primary key.
+
+**`market_observations`**
+
+`id`, `instrument_id`, `provider_id`, `observation_type`, `price_or_value`, `currency`, `source_timestamp`, `ingested_at`, `is_delayed`, `is_simulated`, `validity_status`, `metadata`.
+
+Add deduplication rules and suitable indexes for time-series access.
+
+**`market_bars`**, where supported:
+
+`id`, `instrument_id`, `provider_id`, `interval`, `bar_start_at`, `open`, `high`, `low`, `close`, `volume`, `currency`, `adjustment_status`, `is_simulated`.
+
+Define uniqueness by instrument, provider, interval, and bar time as appropriate.
+
+**`corporate_actions`**, where applicable:
+
+`id`, `instrument_id`, `provider_id`, `action_type`, `effective_date`, `source_status`, `action_data`, `source_timestamp`.
+
