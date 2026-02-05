@@ -661,3 +661,53 @@ Define uniqueness by instrument, provider, interval, and bar time as appropriate
 
 `id`, `instrument_id`, `provider_id`, `action_type`, `effective_date`, `source_status`, `action_data`, `source_timestamp`.
 
+### Portfolio and account connections
+
+**`financial_accounts`**
+
+`id`, `user_id`, `provider_id`, `external_account_reference`, `account_type`, `base_currency`, `connection_status`, `source_type`, `last_synced_at`, `created_at`.
+
+Store external references according to provider requirements. Avoid collecting full account identifiers where they are not necessary.
+
+**`account_connections`**
+
+`id`, `user_id`, `provider_id`, `status`, `authorized_scopes`, `consent_id`, `token_reference`, `last_success_at`, `last_error_code`, `created_at`, `revoked_at`.
+
+Never store plaintext access tokens or client secrets.
+
+**`holdings_snapshots`**
+
+`id`, `financial_account_id`, `instrument_id`, `provider_timestamp`, `ingested_at`, `quantity`, `market_value`, `currency`, `source_type`, `quality_status`.
+
+**`investment_transactions`**
+
+`id`, `financial_account_id`, `external_transaction_id`, `idempotency_key`, `instrument_id`, `transaction_type`, `quantity`, `unit_price`, `fees`, `currency`, `trade_date`, `settlement_date`, `source_timestamp`, `ingested_at`, `source_type`, `reconciliation_status`.
+
+Do not overwrite provider history when a subsequent synchronization changes a derived position. Preserve source events and reconcile them through a documented process.
+
+If the product computes portfolio holdings from transactions, model all relevant supported events, including buys, sells, cash movements, dividends, fees, corporate actions, and corrections. When the event history is incomplete, prefer clearly identified provider-reported snapshots over unsupported reconstruction.
+
+### Orders and execution
+
+**`broker_accounts`**
+
+`id`, `user_id`, `provider_id`, `external_account_reference`, `authorization_status`, `capability_status`, `created_at`.
+
+**`order_intents`**
+
+`id`, `user_id`, `broker_account_id`, `instrument_id`, `side`, `quantity`, `order_type`, `limit_price`, `validity`, `preview_snapshot`, `confirmation_timestamp`, `status`, `created_at`.
+
+**`broker_orders`**
+
+`id`, `order_intent_id`, `provider_order_id`, `idempotency_key`, `submission_status`, `order_status`, `submitted_at`, `last_provider_update_at`, `error_code`.
+
+**`order_events`**
+
+`id`, `broker_order_id`, `provider_event_id`, `event_type`, `event_timestamp`, `ingested_at`, `payload_reference`, `processed_at`.
+
+**`execution_fills`**
+
+`id`, `broker_order_id`, `provider_fill_id`, `quantity`, `price`, `fees`, `currency`, `executed_at`.
+
+Use uniqueness constraints on provider references where appropriate. Preserve the event history required to explain how a final order state was reached.
+
