@@ -711,3 +711,49 @@ If the product computes portfolio holdings from transactions, model all relevant
 
 Use uniqueness constraints on provider references where appropriate. Preserve the event history required to explain how a final order state was reached.
 
+### AI and knowledge sources
+
+**`knowledge_sources`**
+
+`id`, `source_type`, `title`, `canonical_url`, `publisher`, `published_at`, `retrieved_at`, `license_status`, `review_status`, `content_version`.
+
+**`knowledge_chunks`**
+
+`id`, `knowledge_source_id`, `chunk_index`, `content`, `metadata`, optional embedding.
+
+Use a vector extension only if the selected retrieval strategy requires it and the database supports it.
+
+**`assistant_conversations`**
+
+`id`, `user_id`, `mode`, `created_at`, `updated_at`.
+
+**`assistant_messages`**
+
+`id`, `conversation_id`, `role`, `content`, `model_id`, `created_at`, `safety_status`, `metadata`.
+
+**`assistant_citations`**
+
+`id`, `message_id`, `knowledge_source_id`, `quoted_or_referenced_section`, `source_version`, `citation_metadata`.
+
+**`generated_insights`**, where needed:
+
+`id`, `user_id`, `insight_type`, `input_snapshot`, `calculation_reference`, `source_references`, `created_at`, `expires_at`.
+
+Do not retain unnecessary sensitive prompts or financial information indefinitely.
+
+### Operations and audit
+
+Add:
+
+- `audit_events`
+- `provider_sync_runs`
+- `integration_webhook_events`
+- `idempotency_records`
+- `notification_preferences`
+- `notifications`
+- `feature_entitlements`
+- `regulatory_approvals`
+- `system_health_events`
+
+Use append-only or tamper-evident audit mechanisms for sensitive actions where appropriate.
+
