@@ -785,3 +785,26 @@ Expose versioned, validated APIs. The precise endpoint implementation should fol
 
 Enforce authentication and authorization on every private endpoint.
 
+### Goals and scenarios
+
+- `GET /api/v1/goals`
+- `POST /api/v1/goals`
+- `GET /api/v1/goals/{goalId}`
+- `PATCH /api/v1/goals/{goalId}`
+- `POST /api/v1/goals/{goalId}/scenarios`
+- `GET /api/v1/scenarios/{scenarioId}`
+
+Scenario creation must validate currency, amounts, dates, contribution frequency, and the permitted ranges of all assumptions.
+
+Return calculation methodology and assumptions alongside results.
+
+### Investments and market data
+
+- `GET /api/v1/instruments`
+- `GET /api/v1/instruments/{instrumentId}`
+- `GET /api/v1/instruments/{instrumentId}/history`
+- `GET /api/v1/market/quotes`
+- `POST /api/v1/investments/compare`
+
+The API must communicate source status, timestamps, currency, delays, and missing-data conditions.
+
