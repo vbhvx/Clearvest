@@ -757,3 +757,31 @@ Add:
 
 Use append-only or tamper-evident audit mechanisms for sensitive actions where appropriate.
 
+### Database requirements
+
+- Every user-owned record must have a server-enforced ownership relationship.
+- Prevent cross-user access at the query and, where practical, row-level-security layer.
+- Use transactions for operations requiring atomic updates.
+- Apply unique constraints to prevent duplicate webhook events, imports, and external transaction records.
+- Use indexes for common user, time, instrument, provider, and status queries.
+- Keep financial-source events distinct from derived analytics.
+- Use UTC timestamps for persisted instants and store market-local calendar information where required.
+- Create forward and rollback procedures for schema changes.
+- Do not make schema changes solely in a deployed database without versioned migrations.
+
+---
+
+## 11. API contracts
+
+Expose versioned, validated APIs. The precise endpoint implementation should follow the repository's architecture, but the contracts below define the minimum behavior.
+
+### Identity and preferences
+
+- `GET /api/v1/me`
+- `PATCH /api/v1/me/profile`
+- `GET /api/v1/me/consents`
+- `POST /api/v1/me/consents`
+- `DELETE /api/v1/me/connections/{connectionId}`
+
+Enforce authentication and authorization on every private endpoint.
+
