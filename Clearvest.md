@@ -808,3 +808,22 @@ Return calculation methodology and assumptions alongside results.
 
 The API must communicate source status, timestamps, currency, delays, and missing-data conditions.
 
+### Portfolio and account connections
+
+- `GET /api/v1/portfolio/summary`
+- `GET /api/v1/portfolio/holdings`
+- `POST /api/v1/portfolio/manual-holdings`
+- `POST /api/v1/connections/{providerId}/start`
+- `GET /api/v1/connections`
+- `POST /api/v1/connections/{providerId}/callback`
+
+Connection callbacks must validate the state, redirect, authorization, and provider response. Do not accept identity or account ownership based on unverified client-supplied values.
+
+### Conversational assistant
+
+- `POST /api/v1/assistant/conversations`
+- `GET /api/v1/assistant/conversations/{conversationId}`
+- `POST /api/v1/assistant/conversations/{conversationId}/messages`
+
+Return structured content, relevant citations, assumptions, uncertainty indicators, and the applicable assistant mode.
+
