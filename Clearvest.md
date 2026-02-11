@@ -827,3 +827,29 @@ Connection callbacks must validate the state, redirect, authorization, and provi
 
 Return structured content, relevant citations, assumptions, uncertainty indicators, and the applicable assistant mode.
 
+### Brokerage
+
+Only activate these routes after the broker and regulatory approval gates are met.
+
+- `POST /api/v1/orders/preview`
+- `POST /api/v1/orders`
+- `GET /api/v1/orders`
+- `GET /api/v1/orders/{orderId}`
+- `POST /api/v1/orders/{orderId}/cancel`
+
+An order-submission request must include a valid idempotency mechanism and the explicitly confirmed order parameters.
+
+Reject unsupported actions on the server. An inactive order route must not submit a real order even if a client attempts to call it directly.
+
+### Error contract
+
+Return consistent error objects containing:
+
+`code`, `message`, `requestId`, and optional validated `details`.
+
+Use suitable HTTP status codes and do not expose stack traces, provider secrets, raw internal exceptions, or unnecessary sensitive information.
+
+Document every endpoint and response schema using OpenAPI. Validate requests and provider responses at runtime, not just through TypeScript types.
+
+---
+
