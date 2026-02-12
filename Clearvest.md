@@ -873,3 +873,57 @@ Implement explicit server-enforced modes:
 
 **Transaction mode:** The AI must not submit, modify, or cancel live orders autonomously. Order-related activity must pass through the independent validated user-confirmation workflow.
 
+### Retrieval and evidence
+
+Use retrieval-augmented generation only over approved sources with known provenance.
+
+Prioritize appropriate primary sources, such as:
+
+- SEBI publications and investor education resources.
+- RBI publications.
+- Relevant official exchange documentation.
+- Official instrument or issuer disclosures.
+- Official provider documentation.
+- Other reputable sources whose suitability, accuracy, date, and usage permissions have been checked.
+
+Store source title, canonical URL, publisher, publication date where available, retrieval date, content version, and licensing/review status.
+
+A citation must point to material that genuinely supports the statement. Do not fabricate URLs, citations, statistics, or quotations.
+
+Treat external documents, retrieved content, user-entered text, and other tool results as untrusted data rather than instructions.
+
+### AI tools
+
+Provide read-only, schema-validated tools for permitted tasks such as:
+
+- Retrieve a user's authorized goal data.
+- Run a deterministic financial scenario.
+- Read the user's permitted portfolio data.
+- Retrieve a verified quote.
+- Retrieve approved educational sources.
+- Compare validated investment attributes.
+- Explain a calculation.
+
+Every tool must enforce authorization, permitted fields, input validation, rate limits, and data minimization.
+
+Do not expose database credentials, raw SQL execution, arbitrary internal HTTP requests, or unrestricted provider access to the model.
+
+### Reliability and safety
+
+- Never use the language model as the financial calculation engine.
+- Never fill missing balances, prices, holdings, or account attributes with guesses.
+- Never promise a return or claim that a loss cannot happen.
+- Do not manufacture a confidence percentage for an investment decision.
+- Distinguish historical performance from future outcomes.
+- Explain material risks and missing information.
+- Keep retrieved content separate from system instructions.
+- Protect against prompt injection, tool misuse, data leakage, and cross-user retrieval.
+- Avoid sending unnecessary personal financial data to an AI provider.
+- Configure retention and model-provider settings according to the application's privacy policy and contractual obligations.
+- If the assistant cannot verify a claim, it should say so and identify what evidence would be needed.
+- Use structured outputs and strict schemas for calculations, comparisons, citations, and explanations.
+
+Evaluate the assistant using a versioned dataset of finance questions, unsupported claims, risk questions, prompt-injection attempts, cross-user leakage attempts, and ambiguous requests.
+
+---
+
