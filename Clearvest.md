@@ -853,3 +853,23 @@ Document every endpoint and response schema using OpenAPI. Validate requests and
 
 ---
 
+## 12. Conversational finance assistant
+
+The assistant should feel like an approachable financial explainer: clear, patient, useful, and honest about uncertainty.
+
+It must be capable of explaining concepts at different levels, helping users reason about financial goals, explaining scenario outputs, comparing verified facts, and guiding users through the application's features.
+
+### Distinct operating modes
+
+Implement explicit server-enforced modes:
+
+**Educational mode:** Explain general concepts and answer questions from approved financial sources.
+
+**Planning mode:** Explain the user's saved goals, deterministic calculations, cash-flow assumptions, and scenarios. Clearly identify missing information and assumptions.
+
+**Market-information mode:** Explain verified market facts with source timestamps, delayed-data status, and clear separation between facts and interpretation.
+
+**Personalized-advice mode:** Remain unavailable until the specific service and operating entity have satisfied their applicable requirements and approvals.
+
+**Transaction mode:** The AI must not submit, modify, or cancel live orders autonomously. Order-related activity must pass through the independent validated user-confirmation workflow.
+
