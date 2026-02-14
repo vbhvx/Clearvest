@@ -927,3 +927,18 @@ Evaluate the assistant using a versioned dataset of finance questions, unsupport
 
 ---
 
+## 13. UI and user experience
+
+Build a calm, clear, trustworthy financial interface.
+
+Avoid copying the look of an aggressive trading terminal. Use a hierarchy that gives beginners a simple starting point while making detailed information available when needed.
+
+### Public pages
+
+- Landing page.
+- Product explanation and limitations.
+- Security and privacy information.
+- Educational content.
+- Login and registration.
+- Terms, privacy policy, and applicable disclosures.
+
