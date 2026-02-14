@@ -942,3 +942,63 @@ Avoid copying the look of an aggressive trading terminal. Use a hierarchy that g
 - Login and registration.
 - Terms, privacy policy, and applicable disclosures.
 
+### Authenticated product
+
+**Home dashboard**
+
+Show financial goals, progress, upcoming contributions, recent relevant activity, and a concise explanation of the user's current planning position.
+
+Distinguish actual data from estimates and demo fixtures without forcing the user to infer the distinction from small print.
+
+**Goals**
+
+List and create goals, edit assumptions, compare scenarios, and review progress.
+
+**Plan**
+
+Display current savings, planned contributions, projected outcomes, inflation-adjusted outcomes where relevant, and scenario trade-offs.
+
+**Learn**
+
+Provide beginner-friendly lessons, a searchable glossary, contextual definitions, and links to source material.
+
+**Explore**
+
+Provide investment discovery, comparisons, relevant costs and risks, and verified product details within the enabled market and product scope.
+
+**Portfolio**
+
+Show authorized or manually entered holdings, current value when supported, asset allocation when calculable, data freshness, provenance, and known limitations.
+
+**Assistant**
+
+Provide a conversational interface that can explain concepts, read authorized personal planning information, and cite sources.
+
+**Connections**
+
+Show connected providers, consent status, account coverage, last synchronization, issues, and disconnection controls.
+
+**Settings and privacy**
+
+Provide preferences, data export and deletion workflows where applicable, consent management, notification controls, and security settings.
+
+**Administration**
+
+Provide restricted tools for provider configuration, integration health, data-source status, regulatory feature gates, background jobs, and audit review.
+
+### Visual and accessibility requirements
+
+- Start mobile-first, then adapt to desktop.
+- Use a consistent typography scale, spacing system, color system, and reusable components.
+- Meet WCAG 2.2 AA accessibility goals where applicable.
+- Support keyboard navigation, visible focus, meaningful labels, screen-reader status updates, and accessible chart alternatives.
+- Show loading, empty, partial-data, error, stale-data, and offline states.
+- Use human-readable currency formatting and explicit date/time labels.
+- Avoid excessive decimals in consumer-facing summaries while preserving internal precision.
+- Provide Hindi and other Indian-language localization readiness, even if the first version launches in English.
+- Keep chart scales, percentage definitions, time periods, and comparison baselines explicit.
+
+Do not use fake reviews, fictitious performance claims, fabricated testimonials, or made-up partner logos.
+
+---
+
