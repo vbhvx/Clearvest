@@ -1002,3 +1002,45 @@ Do not use fake reviews, fictitious performance claims, fabricated testimonials,
 
 ---
 
+## 14. Security, privacy, and data governance
+
+Treat financial information as highly sensitive.
+
+Implement:
+
+- Strict server-side authorization.
+- Secure password/session handling through a maintained authentication implementation.
+- MFA or step-up authentication where appropriate.
+- CSRF protection where applicable.
+- Rate limits and abuse controls.
+- Input validation and output encoding.
+- Protection against SQL injection, XSS, SSRF, insecure direct object references, and broken access control.
+- Strict CORS and security-header configuration.
+- Secure cookie settings.
+- Secret management outside source control and client bundles.
+- Encryption in transit and appropriate encryption at rest.
+- Encryption of sensitive provider tokens using managed keys or a similarly robust approach.
+- Key rotation and access restriction.
+- Dependency vulnerability scanning.
+- Audit logging for sensitive account, consent, provider, and order events.
+- Redaction of sensitive data from logs, traces, analytics, and error reporting.
+- Backup, restoration, incident-response, and retention procedures.
+
+Use least-privilege access for humans, services, databases, queues, and providers.
+
+Do not log access tokens, passwords, OTPs, TOTP secrets, full account identifiers, or complete sensitive statements unnecessarily.
+
+### Data lifecycle
+
+Define a data inventory and map each field to its purpose, lawful basis or applicable processing condition, collection mechanism, retention period, access controls, and deletion procedure.
+
+Implement user-facing notices, consent, correction, export, revocation, deletion, and grievance workflows as appropriate to the applicable law and actual product operating model.
+
+Make consent granular by purpose and provider when required. Revocation must stop future access where applicable and propagate to integration state.
+
+Do not claim that data has been deleted if copies remain in active systems, provider systems, logs, or backups. Document retention exceptions and eventual deletion behavior.
+
+Before selecting production cloud regions or transferring data to an AI provider or third party, review the applicable legal, contractual, security, and data-location requirements.
+
+---
+
