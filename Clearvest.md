@@ -1044,3 +1044,26 @@ Before selecting production cloud regions or transferring data to an AI provider
 
 ---
 
+## 15. Testing strategy
+
+Tests must validate financial correctness, integration safety, user isolation, and real workflows.
+
+### Unit tests
+
+Cover:
+
+- Future value and present value.
+- Periodic contribution calculations.
+- Target-contribution calculations.
+- Inflation-adjusted goals.
+- Rate-conversion conventions.
+- Currency conversion.
+- Decimal precision and rounding.
+- Missing and invalid inputs.
+- Date boundaries and leap years.
+- Risk and suitability workflow gating.
+- Authorization decisions.
+- AI response schemas and citation validation.
+
+Include known-answer tests with independently checked expected results.
+
