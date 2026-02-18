@@ -1067,3 +1067,50 @@ Cover:
 
 Include known-answer tests with independently checked expected results.
 
+### Property and invariant tests
+
+Test properties such as:
+
+- A zero-contribution scenario does not produce contributions that were never made.
+- An investment projection with no growth assumption does not manufacture investment gains.
+- The output reconciles to the documented formula and rounding policy.
+- Adding amounts in different currencies is rejected unless a conversion is supplied.
+- A user's request cannot return another user's financial records.
+- Disabled broker functionality cannot place real orders.
+- Reprocessing the same provider event does not produce duplicate transactions or fills.
+- A failed or stale market-data request never becomes a falsely fresh quote.
+
+### Integration tests
+
+Use deterministic sandbox providers to test:
+
+- User onboarding.
+- Goal creation and editing.
+- Scenario saving and reproducibility.
+- File parsing where implemented.
+- Market-data ingestion.
+- Account connection and revocation.
+- Provider synchronization.
+- Portfolio aggregation.
+- Assistant retrieval and citations.
+- Failed provider requests.
+- Webhook idempotency.
+- Order preview and confirmation in sandbox.
+- Order rejection, partial fills, timeouts, and reconciliation.
+
+### Security tests
+
+Cover:
+
+- Authentication bypass attempts.
+- Cross-user access and IDOR.
+- Role and feature-gate bypass.
+- Secret leakage.
+- Malicious import files.
+- Unsafe upload handling.
+- Prompt injection and retrieval poisoning.
+- Abuse of AI tools.
+- Replayed callbacks and webhooks.
+- Duplicate order submissions.
+- Invalid or expired authorization.
+
