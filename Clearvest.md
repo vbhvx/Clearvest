@@ -1114,3 +1114,17 @@ Cover:
 - Duplicate order submissions.
 - Invalid or expired authorization.
 
+### End-to-end tests
+
+Use browser automation to verify the most important complete journeys from onboarding through creating a goal, running a scenario, reading an explanation, and revisiting saved progress.
+
+Use a separate and clearly labeled sandbox test for account connections or trading workflows.
+
+### Test integrity
+
+Do not claim tests, type checks, security scans, builds, or migrations succeeded unless they were actually run.
+
+Report what passed, what failed, what was not run, and what remains blocked by external dependencies.
+
+---
+
