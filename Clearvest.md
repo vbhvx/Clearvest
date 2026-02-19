@@ -1128,3 +1128,47 @@ Report what passed, what failed, what was not run, and what remains blocked by e
 
 ---
 
+## 16. Observability and operational reliability
+
+Implement structured logs, metrics, traces where useful, and health checks.
+
+Monitor:
+
+- API error rate and latency.
+- Database health and slow queries.
+- Background job failures.
+- Integration latency and provider outages.
+- Quote age and stale-data percentage.
+- Account synchronization failures.
+- Reconciliation mismatches.
+- AI citation and evaluation failures.
+- Feature-gate changes.
+- Order-state inconsistencies if brokerage functionality is enabled.
+
+Alert on material operational failures without placing sensitive financial data in alert payloads.
+
+Provide a safe, auditable provider-disable mechanism. A failing external integration should degrade the relevant feature instead of taking down goal planning or educational features.
+
+For financial integrations, design explicit recovery workflows for partially completed operations. Never assume that a timeout proves that nothing happened.
+
+---
+
+## 17. Repository structure and engineering workflow
+
+Use a maintainable project structure similar to the following, adapting it to the actual repository:
+
+- `apps/web` — web application.
+- `apps/api` — API service, if separated from the web application.
+- `apps/worker` — background processing, if needed.
+- `packages/domain` — core financial models and domain rules.
+- `packages/finance` — deterministic calculation engine.
+- `packages/providers` — provider adapters and contracts.
+- `packages/ai` — retrieval, model interfaces, prompts, and evaluations.
+- `packages/schemas` — shared validated request/response schemas.
+- `packages/ui` — shared interface components, if justified.
+- `database/migrations` — versioned database migrations.
+- `tests` — integration, end-to-end, and security tests.
+- `docs` — architecture, source registry, API contracts, operating procedures, and deployment guides.
+
+Do not introduce a monorepo or a separate service simply for appearance. Fit the repository structure to the actual complexity and dependencies.
+
