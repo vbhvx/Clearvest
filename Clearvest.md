@@ -1172,3 +1172,46 @@ Use a maintainable project structure similar to the following, adapting it to th
 
 Do not introduce a monorepo or a separate service simply for appearance. Fit the repository structure to the actual complexity and dependencies.
 
+### Required working method
+
+1. Inspect the repository, current branch, package manager, dependencies, database setup, existing UI, environment variables, and available test scripts.
+2. Identify functioning code, broken workflows, missing foundations, and relevant security risks.
+3. Write a concise implementation plan based on the actual repository.
+4. Define the domain model, feature-gate rules, and financial calculation contracts before building dependent UI.
+5. Implement end-to-end vertical slices: schema, server logic, API, UI, loading/error states, and tests.
+6. Run migrations, type checks, linting, unit tests, integration tests, and the production build as appropriate.
+7. Fix defects found by those checks instead of merely reporting them.
+8. Verify important user journeys using the available automated or manual test tooling.
+9. Document any external dependency that could not be verified or activated.
+10. Finish with a repository-specific handoff describing what works and how to run it.
+
+Do not replace working code wholesale without a documented reason. Do not build the entire interface using static mock data and call the application complete.
+
+---
+
+## 18. Environment configuration and deployment
+
+Create a validated environment configuration system.
+
+Provide an `.env.example` with placeholder values only. Do not commit real credentials, database passwords, API keys, access tokens, or production secrets.
+
+Configuration should explicitly control modes such as:
+
+- `APP_ENV`
+- `DEMO_MODE`
+- `MARKET_DATA_MODE`
+- `ACCOUNT_AGGREGATION_MODE`
+- `BROKERAGE_MODE`
+- `PERSONALIZED_ADVICE_MODE`
+- `AI_PROVIDER`
+- `MARKET_DATA_PROVIDER`
+- `DATABASE_URL`
+- `REDIS_URL`, when applicable
+- `OBJECT_STORAGE_*`, when applicable
+- `AUTH_*`
+- `OBSERVABILITY_*`
+
+These names are illustrative; use a consistent actual configuration schema.
+
+Validate configuration at application startup. Invalid production settings must fail safely rather than silently enabling demo behavior or live trading.
+
