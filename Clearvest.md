@@ -1215,3 +1215,26 @@ These names are illustrative; use a consistent actual configuration schema.
 
 Validate configuration at application startup. Invalid production settings must fail safely rather than silently enabling demo behavior or live trading.
 
+### Deployment requirements
+
+- Provide reproducible local setup.
+- Supply database migrations and deterministic seed fixtures.
+- Provide a Dockerfile and Docker Compose configuration where useful.
+- Add CI checks for linting, types, tests, migrations, and builds.
+- Use separate development, staging, and production configuration.
+- Keep production secrets in the deployment platform's secret manager.
+- Configure secure transport and appropriate security headers.
+- Document the selected hosting environment and region.
+- Implement database backups and test restoration.
+- Document migration and rollback procedures.
+- Add health checks and graceful shutdown behavior.
+- Provide a deployment and recovery runbook.
+
+Choose hosting and infrastructure based on the actual product's privacy, reliability, integration, cost, and compliance requirements. Do not claim a hosting region or regulatory certification without verification.
+
+---
+
+## 19. Phased implementation plan
+
+Implement the application in the following order. Do not skip core correctness work to build flashy charts or a chatbot first.
+
