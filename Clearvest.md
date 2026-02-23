@@ -1238,3 +1238,47 @@ Choose hosting and infrastructure based on the actual product's privacy, reliabi
 
 Implement the application in the following order. Do not skip core correctness work to build flashy charts or a chatbot first.
 
+### Phase 0 — Repository inspection and feasibility
+
+Deliver:
+
+- Repository assessment.
+- Product architecture.
+- Feature-gate matrix.
+- Regulatory and provider dependency register.
+- Initial schema and API plan.
+- Verified external integration requirements.
+- A list of immediate capabilities versus blocked capabilities.
+
+Build no live financial integration against imaginary endpoints.
+
+### Phase 1 — Core platform and financial planning
+
+Implement:
+
+- Authentication.
+- User profile and preferences.
+- Goal creation and management.
+- Decimal-safe financial calculations.
+- Scenario generation and persistence.
+- Dashboard and goal progress.
+- Financial glossary and foundational educational content.
+- Simulated fixture data with visible labels.
+- Initial automated tests.
+- Local setup and environment configuration.
+
+This must be a complete, usable application, not just scaffolding.
+
+### Phase 2 — Investment education and market information
+
+Implement:
+
+- Investment discovery architecture.
+- Investment comparison UI and validated data contracts.
+- Source registry and provenance.
+- Market-data adapter interfaces.
+- A deterministic market-data simulator.
+- Verified live market-data adapter only when a real, authorized source is selected and configured.
+- Quote freshness, delayed-data, and unavailable-data states.
+- Investment scenario simulator and source-backed assistant explanations.
+
