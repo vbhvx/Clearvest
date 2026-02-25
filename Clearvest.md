@@ -1282,3 +1282,29 @@ Implement:
 - Quote freshness, delayed-data, and unavailable-data states.
 - Investment scenario simulator and source-backed assistant explanations.
 
+### Phase 3 — Portfolio visibility and account connectivity
+
+Implement:
+
+- Manual holdings.
+- Portfolio aggregation.
+- Snapshot and transaction reconciliation where supported.
+- Provider registry and adapter framework.
+- Account-connection workflow.
+- Consent management and revocation.
+- Synchronization state and failure recovery.
+- Read-only authorized provider integration once approved.
+
+### Phase 4 — Personalized investment guidance
+
+Before enabling security-specific personalized recommendations:
+
+- Verify the proposed business model and applicable legal requirements.
+- Confirm registration or authorized partner arrangements as required.
+- Define risk profiling, suitability, disclosures, conflict management, and recordkeeping requirements.
+- Validate the recommendation logic with qualified reviewers.
+- Add auditability and compliance evaluation tests.
+- Obtain the necessary approvals.
+
+If these conditions are not satisfied, complete only the permitted educational and planning functions.
+
