@@ -1308,3 +1308,29 @@ Before enabling security-specific personalized recommendations:
 
 If these conditions are not satisfied, complete only the permitted educational and planning functions.
 
+### Phase 5 — Brokerage integration
+
+Implement:
+
+- A provider-specific broker adapter.
+- Provider authentication and account authorization.
+- Order previews.
+- Explicit confirmation.
+- Server-side order submission.
+- Idempotency controls.
+- Order-state tracking and event reconciliation.
+- Kill switch, provider-disable control, and operational monitoring.
+- Sandbox testing and recovery workflows.
+
+Enable real orders only after every necessary regulatory, provider, commercial, security, and operational gate has been satisfied.
+
+### Phase 6 — International expansion
+
+Prepare for expansion through configuration and adapter boundaries rather than hardcoded assumptions.
+
+Add jurisdiction-specific support for currencies, number formats, timezones, market calendars, instrument types, data licensing, relevant financial rules, tax models, localization, and eligible providers.
+
+Do not treat the international release as a simple currency-switching feature.
+
+---
+
