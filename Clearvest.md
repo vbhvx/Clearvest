@@ -1334,3 +1334,19 @@ Do not treat the international release as a simple currency-switching feature.
 
 ---
 
+## 20. Acceptance criteria
+
+The application is not ready for handoff until the following criteria are satisfied or explicitly identified as blocked by a verified external dependency.
+
+### Product functionality
+
+- A new user can register, access the application, and create a financial goal.
+- The user can edit the goal and change its assumptions.
+- The planning engine generates reproducible outputs from validated inputs.
+- Users can compare understandable scenarios and see their assumptions.
+- All simulated data is clearly labeled.
+- Portfolio summaries distinguish user-entered, provider-reported, derived, and simulated values.
+- The finance assistant explains supported concepts and uses valid sources.
+- A user can review and manage account connections and relevant consent state.
+- Important workflows have proper loading, empty, error, and partial-data states.
+
