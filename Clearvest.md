@@ -1350,3 +1350,24 @@ The application is not ready for handoff until the following criteria are satisf
 - A user can review and manage account connections and relevant consent state.
 - Important workflows have proper loading, empty, error, and partial-data states.
 
+### Financial correctness
+
+- Money and price computations avoid binary floating-point arithmetic where financial precision is required.
+- Currency mismatches are detected.
+- Calculation assumptions and formula versions are stored.
+- Scenario outputs can be reproduced.
+- Stale, missing, delayed, and simulated data cannot be presented as current live data.
+- Performance and tax metrics are not presented as exact when required data is unavailable.
+- Provider records and external events are deduplicated using appropriate constraints and idempotency controls.
+
+### Security and compliance
+
+- Every private endpoint enforces authentication and ownership authorization.
+- Feature gates are enforced by the backend.
+- No secrets are exposed in the browser bundle or committed repository.
+- Provider connections use authorized flows rather than password collection or scraping.
+- Sensitive actions are audited.
+- Personal-data lifecycle and consent workflows are documented and tested.
+- Personalized securities advice and live order execution remain disabled unless their documented approval requirements have been met.
+- Demo orders cannot reach a live broker.
+
