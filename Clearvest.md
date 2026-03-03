@@ -1371,3 +1371,57 @@ The application is not ready for handoff until the following criteria are satisf
 - Personalized securities advice and live order execution remain disabled unless their documented approval requirements have been met.
 - Demo orders cannot reach a live broker.
 
+### Engineering quality
+
+- Database migrations run from a clean database.
+- Seed data can be loaded deterministically.
+- Type checking, linting, automated tests, and production build are executed.
+- Critical defects discovered during verification are fixed or explicitly listed.
+- No placeholder page is represented as a completed integration.
+- A developer can start the application using the documented steps.
+- The deployment guide, environment template, API documentation, and test instructions are complete.
+
+---
+
+## 21. Required handoff
+
+At the end of the implementation, provide a concise but precise engineering report containing:
+
+1. What the application does.
+2. The architecture and major modules.
+3. The actual database schema and migrations created.
+4. Implemented API endpoints and their contracts.
+5. Implemented financial calculations and test coverage.
+6. Active data modes and the provenance of their data.
+7. External integrations that work, their verified capabilities, and their authorization status.
+8. Features that remain disabled and the exact reason for each.
+9. Results of linting, type checks, automated tests, builds, and security checks that were actually run.
+10. Known issues, assumptions, and unresolved dependencies.
+11. Environment variables and setup instructions.
+12. Deployment and rollback procedures.
+13. A prioritized list of the next engineering tasks.
+
+Do not claim production readiness, regulatory compliance, or working external integrations solely because the relevant code exists.
+
+---
+
+## 22. Final execution instruction
+
+Start by inspecting the repository and the available development environment.
+
+Do not ask unnecessary clarification questions when a reasonable default can be selected and documented. Where a decision materially affects financial correctness, security, legal permissibility, data integrity, or real-money execution, use the safer default and record the unresolved requirement.
+
+Implement the earliest complete vertical slice first: authentication, a financial goal, an accurate and tested planning calculation, a saved scenario, and a clear dashboard using labeled simulated data.
+
+Then expand incrementally through education, verified market information, portfolio visibility, authorized account connections, approved personalized guidance, and brokerage integration.
+
+**The fundamental architecture is:**
+
+- The financial data layer establishes what is actually known.
+- The calculation engine determines the numerical results.
+- The planning and portfolio services organize those results around the user's goals.
+- The AI assistant explains the evidence and helps the user understand their choices.
+- The authorization and compliance layer decides which actions are permitted.
+- The user remains in control of consequential financial decisions.
+
+Build a product that helps people become more informed and confident investors without manufacturing certainty, hiding risk, or compromising their financial security.
