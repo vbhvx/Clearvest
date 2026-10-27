@@ -1,0 +1,544 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ----------------------------------------------------
+// 1. Identity, Profiles and Privacy (DPDP Act Aligned)
+// ----------------------------------------------------
+
+model User {
+  id                String            @id @default(uuid())
+  email             String            @unique
+  passwordHash      String            @map("password_hash")
+  emailVerifiedAt   DateTime?         @map("email_verified_at")
+  status            String            @default("ACTIVE") // ACTIVE, SUSPENDED, DELETED
+  createdAt         DateTime          @default(now()) @map("created_at")
+  updatedAt         DateTime          @updatedAt @map("updated_at")
+
+  profile           UserProfile?
+  consents          Consent[]
+  privacyRequests   PrivacyRequest[]
+  goals             FinancialGoal[]
+  planningScenarios PlanningScenario[]
+  riskAssessments   RiskAssessment[]
+  financialAccounts FinancialAccount[]
+  accountConnections AccountConnection[]
+  brokerAccounts    BrokerAccount[]
+  orderIntents      OrderIntent[]
+  conversations     AssistantConversation[]
+  auditEvents       AuditEvent[]
+
+  @@map("users")
+}
+
+model UserProfile {
+  id                      String    @id @default(uuid())
+  userId                  String    @unique @map("user_id")
+  fullName                String    @map("full_name")
+  countryCode             String    @default("IN") @map("country_code")
+  preferredCurrency       String    @default("INR") @map("preferred_currency")
+  preferredLocale         String    @default("en-IN") @map("preferred_locale")
+  timezone                String    @default("Asia/Kolkata") @map("timezone")
+  investmentKnowledge     String    @default("BEGINNER") @map("investment_knowledge") // BEGINNER, INTERMEDIATE, ADVANCED
+  lossTolerance           String    @default("MODERATE") @map("loss_tolerance") // LOW, MODERATE, HIGH
+  approximateMonthlyIncome Decimal? @map("approximate_monthly_income") @db.Decimal(14, 2)
+  essentialMonthlyExpenses Decimal? @map("essential_monthly_expenses") @db.Decimal(14, 2)
+  emergencyFundMonths     Int       @default(6) @map("emergency_fund_months")
+  createdAt               DateTime  @default(now()) @map("created_at")
+  updatedAt               DateTime  @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_profiles")
+}
+
+model Consent {
+  id                String    @id @default(uuid())
+  userId            String    @map("user_id")
+  providerId        String?   @map("provider_id")
+  purpose           String    // e.g. "ACCOUNT_AGGREGATION_READ", "PORTFOLIO_TRACKING"
+  dataCategories    String[]  @map("data_categories") // e.g. ["BANK_BALANCE", "DEPOSITS", "SECURITIES"]
+  consentVersion    String    @default("1.0") @map("consent_version")
+  grantedAt         DateTime  @default(now()) @map("granted_at")
+  expiresAt         DateTime  @map("expires_at")
+  revokedAt         DateTime? @map("revoked_at")
+  status            String    @default("ACTIVE") // ACTIVE, REVOKED, EXPIRED
+  providerReference String?   @map("provider_reference")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accountConnections AccountConnection[]
+
+  @@index([userId, status])
+  @@map("consents")
+}
+
+model PrivacyRequest {
+  id              String    @id @default(uuid())
+  userId          String    @map("user_id")
+  requestType     String    @map("request_type") // DATA_EXPORT, DATA_DELETION, CONSENT_REVOCATION
+  status          String    @default("PENDING") // PENDING, PROCESSING, COMPLETED, REJECTED
+  requestedAt     DateTime  @default(now()) @map("requested_at")
+  completedAt     DateTime? @map("completed_at")
+  auditReference  String?   @map("audit_reference")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("privacy_requests")
+}
+
+// ----------------------------------------------------
+// 2. Goals and Financial Planning Engine
+// ----------------------------------------------------
+
+model FinancialGoal {
+  id                    String             @id @default(uuid())
+  userId                String             @map("user_id")
+  name                  String
+  goalType              String             @map("goal_type") // EMERGENCY_SAVINGS, RETIREMENT, HOME_PURCHASE, HIGHER_EDUCATION, MAJOR_EXPENSE, WEALTH_BUILDING, CUSTOM
+  targetAmount          Decimal            @map("target_amount") @db.Decimal(16, 2)
+  targetCurrency        String             @default("INR") @map("target_currency")
+  targetDate            DateTime           @map("target_date")
+  currentAmount         Decimal            @default(0) @map("current_amount") @db.Decimal(16, 2)
+  plannedContribution   Decimal            @default(0) @map("planned_contribution") @db.Decimal(16, 2)
+  contributionFrequency String             @default("MONTHLY") @map("contribution_frequency") // MONTHLY, QUARTERLY, ANNUALLY, ONE_TIME
+  inflationAssumption   Decimal            @default(6.0) @map("inflation_assumption") @db.Decimal(5, 2) // percentage
+  expectedReturnRate    Decimal            @default(10.0) @map("expected_return_rate") @db.Decimal(5, 2) // percentage
+  status                String             @default("ACTIVE") // ACTIVE, ACHIEVED, ARCHIVED
+  createdAt             DateTime           @default(now()) @map("created_at")
+  updatedAt             DateTime           @updatedAt @map("updated_at")
+
+  user                  User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  scenarios             PlanningScenario[]
+
+  @@index([userId, status])
+  @@map("financial_goals")
+}
+
+model PlanningScenario {
+  id                 String        @id @default(uuid())
+  userId             String        @map("user_id")
+  goalId             String        @map("goal_id")
+  scenarioName       String        @map("scenario_name") // BASELINE, FAVORABLE, CONSERVATIVE, CUSTOM
+  inputSnapshot      Json          @map("input_snapshot")
+  assumptionSnapshot Json          @map("assumption_snapshot")
+  formulaVersion     String        @default("1.0.0") @map("formula_version")
+  outputSnapshot     Json          @map("output_snapshot")
+  currency           String        @default("INR")
+  createdAt          DateTime      @default(now()) @map("created_at")
+
+  user User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  goal FinancialGoal @relation(fields: [goalId], references: [id], onDelete: Cascade)
+
+  @@index([userId, goalId])
+  @@map("planning_scenarios")
+}
+
+model RiskAssessment {
+  id                String   @id @default(uuid())
+  userId            String   @map("user_id")
+  assessmentVersion String   @default("1.0") @map("assessment_version")
+  responses         Json     // Answers to validated questions
+  result            Json     // Computed suitability and score
+  completionStatus  String   @default("COMPLETED") @map("completion_status")
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("risk_assessments")
+}
+
+// ----------------------------------------------------
+// 3. Investment Instruments & Market Data Registry
+// ----------------------------------------------------
+
+model Provider {
+  id                    String               @id // e.g. "nse_india", "rbi_retail_direct", "simulated_market_feed"
+  providerType          String               @map("provider_type") // MARKET_DATA, ACCOUNT_AGGREGATOR, BROKER
+  displayName           String               @map("display_name")
+  countryCode           String               @default("IN") @map("country_code")
+  officialDocsUrl       String?              @map("official_docs_url")
+  status                String               @default("not_reviewed") // not_reviewed, review_required, partner_required, approval_pending, approved, disabled
+  capabilities          Json                 // Supported instruments, order types, data types
+  licensingMetadata     Json                 @map("licensing_metadata") // redistribution rights, delayed status, terms
+  configurationMetadata Json                 @map("configuration_metadata")
+  createdAt             DateTime             @default(now()) @map("created_at")
+  updatedAt             DateTime             @updatedAt @map("updated_at")
+
+  instruments           Instrument[]
+  marketObservations    MarketObservation[]
+  financialAccounts     FinancialAccount[]
+  accountConnections    AccountConnection[]
+  brokerAccounts        BrokerAccount[]
+
+  @@map("providers")
+}
+
+model Instrument {
+  id                   String               @id @default(uuid())
+  providerId           String               @map("provider_id")
+  providerInstrumentId String               @map("provider_instrument_id")
+  symbol               String
+  name                 String
+  instrumentType       String               @map("instrument_type") // EQUITY, MUTUAL_FUND, ETF, FIXED_INCOME, GOVERNMENT_SECURITY, GOLD_SGB
+  exchange             String               @default("NSE") // NSE, BSE, RBI, AMFI
+  countryCode          String               @default("IN") @map("country_code")
+  tradingCurrency      String               @default("INR") @map("trading_currency")
+  quantityPrecision    Int                  @default(0) @map("quantity_precision") // 0 for equities, 3 for mutual funds
+  pricePrecision       Int                  @default(2) @map("price_precision")
+  status               String               @default("ACTIVE")
+  metadata             Json                 // Category, Expense Ratio, Lock-in, Risk category, Tax treatment
+  updatedAt            DateTime             @updatedAt @map("updated_at")
+
+  provider             Provider             @relation(fields: [providerId], references: [id])
+  marketObservations   MarketObservation[]
+  holdingsSnapshots    HoldingsSnapshot[]
+  investmentTransactions InvestmentTransaction[]
+  orderIntents         OrderIntent[]
+
+  @@unique([providerId, providerInstrumentId])
+  @@index([symbol, exchange])
+  @@index([instrumentType])
+  @@map("instruments")
+}
+
+model MarketObservation {
+  id               String     @id @default(uuid())
+  instrumentId     String     @map("instrument_id")
+  providerId       String     @map("provider_id")
+  observationType  String     @map("observation_type") // LAST_PRICE, NAV, YIELD, CLOSE
+  priceOrValue     Decimal    @map("price_or_value") @db.Decimal(16, 4)
+  currency         String     @default("INR")
+  sourceTimestamp  DateTime   @map("source_timestamp")
+  ingestedAt       DateTime   @default(now()) @map("ingested_at")
+  isDelayed        Boolean    @default(false) @map("is_delayed")
+  isSimulated      Boolean    @default(false) @map("is_simulated")
+  validityStatus   String     @default("VALID") @map("validity_status") // VALID, STALE, SUSPECT
+  metadata         Json?
+
+  instrument       Instrument @relation(fields: [instrumentId], references: [id], onDelete: Cascade)
+  provider         Provider   @relation(fields: [providerId], references: [id])
+
+  @@index([instrumentId, sourceTimestamp(sort: Desc)])
+  @@map("market_observations")
+}
+
+// ----------------------------------------------------
+// 4. Portfolio & Financial Account Connections
+// ----------------------------------------------------
+
+model FinancialAccount {
+  id                        String                  @id @default(uuid())
+  userId                    String                  @map("user_id")
+  providerId                String                  @map("provider_id")
+  externalAccountReference  String                  @map("external_account_reference")
+  accountType               String                  @map("account_type") // BANK_SAVINGS, DEMAT, MUTUAL_FUND_FOLIO, PPF, NPS, SIMULATED_DEMAT
+  baseCurrency              String                  @default("INR") @map("base_currency")
+  connectionStatus          String                  @default("ACTIVE") @map("connection_status") // ACTIVE, DISCONNECTED, ERROR, SIMULATED
+  sourceType                String                  @map("source_type") // USER_ENTERED, IMPORTED, PROVIDER_REPORTED, DERIVED, SIMULATED_DEMO
+  lastSyncedAt              DateTime?               @map("last_synced_at")
+  createdAt                 DateTime                @default(now()) @map("created_at")
+
+  user                      User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider                  Provider                @relation(fields: [providerId], references: [id])
+  holdingsSnapshots         HoldingsSnapshot[]
+  transactions              InvestmentTransaction[]
+
+  @@unique([userId, providerId, externalAccountReference])
+  @@index([userId])
+  @@map("financial_accounts")
+}
+
+model AccountConnection {
+  id               String    @id @default(uuid())
+  userId           String    @map("user_id")
+  providerId       String    @map("provider_id")
+  status           String    @default("ACTIVE") // ACTIVE, REVOKED, EXPIRED, ERROR
+  authorizedScopes Json      @map("authorized_scopes")
+  consentId        String?   @map("consent_id")
+  tokenReference   String?   @map("token_reference") // Encrypted reference, never plaintext
+  lastSuccessAt    DateTime? @map("last_success_at")
+  lastErrorCode    String?   @map("last_error_code")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  revokedAt        DateTime? @map("revoked_at")
+
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider         Provider  @relation(fields: [providerId], references: [id])
+  consent          Consent?  @relation(fields: [consentId], references: [id])
+
+  @@index([userId, providerId])
+  @@map("account_connections")
+}
+
+model HoldingsSnapshot {
+  id                 String           @id @default(uuid())
+  financialAccountId String           @map("financial_account_id")
+  instrumentId       String           @map("instrument_id")
+  providerTimestamp  DateTime         @map("provider_timestamp")
+  ingestedAt         DateTime         @default(now()) @map("ingested_at")
+  quantity           Decimal          @db.Decimal(16, 4)
+  averageBuyPrice    Decimal          @map("average_buy_price") @db.Decimal(16, 4)
+  marketValue        Decimal          @map("market_value") @db.Decimal(16, 2)
+  currency           String           @default("INR")
+  sourceType         String           @map("source_type") // USER_ENTERED, IMPORTED, PROVIDER_REPORTED, DERIVED, SIMULATED_DEMO
+  qualityStatus      String           @default("CONFIRMED") @map("quality_status") // CONFIRMED, ESTIMATED, RECONCILIATION_REQUIRED
+
+  financialAccount   FinancialAccount @relation(fields: [financialAccountId], references: [id], onDelete: Cascade)
+  instrument         Instrument       @relation(fields: [instrumentId], references: [id])
+
+  @@index([financialAccountId])
+  @@map("holdings_snapshots")
+}
+
+model InvestmentTransaction {
+  id                    String           @id @default(uuid())
+  financialAccountId    String           @map("financial_account_id")
+  externalTransactionId String?          @map("external_transaction_id")
+  idempotencyKey        String?          @unique @map("idempotency_key")
+  instrumentId          String           @map("instrument_id")
+  transactionType       String           @map("transaction_type") // BUY, SELL, DIVIDEND, INTEREST, DEPOSIT, WITHDRAWAL
+  quantity              Decimal          @db.Decimal(16, 4)
+  unitPrice             Decimal          @map("unit_price") @db.Decimal(16, 4)
+  fees                  Decimal          @default(0) @db.Decimal(16, 2)
+  currency              String           @default("INR")
+  tradeDate             DateTime         @map("trade_date")
+  settlementDate        DateTime?        @map("settlement_date")
+  sourceTimestamp       DateTime         @default(now()) @map("source_timestamp")
+  ingestedAt            DateTime         @default(now()) @map("ingested_at")
+  sourceType            String           @map("source_type") // USER_ENTERED, IMPORTED, PROVIDER_REPORTED, SIMULATED_DEMO
+  reconciliationStatus  String           @default("RECONCILED") @map("reconciliation_status") // RECONCILED, UNMATCHED, PENDING
+
+  financialAccount      FinancialAccount @relation(fields: [financialAccountId], references: [id], onDelete: Cascade)
+  instrument            Instrument       @relation(fields: [instrumentId], references: [id])
+
+  @@index([financialAccountId, tradeDate])
+  @@map("investment_transactions")
+}
+
+// ----------------------------------------------------
+// 5. Brokerage Integration & Order Lifecycle
+// ----------------------------------------------------
+
+model BrokerAccount {
+  id                       String        @id @default(uuid())
+  userId                   String        @map("user_id")
+  providerId               String        @map("provider_id")
+  externalAccountReference String        @map("external_account_reference")
+  authorizationStatus      String        @default("PENDING") @map("authorization_status") // PENDING, AUTHORIZED, SUSPENDED
+  capabilityStatus         String        @default("SANDBOX_ONLY") @map("capability_status") // SANDBOX_ONLY, LIVE_APPROVED, DISABLED
+  createdAt                DateTime      @default(now()) @map("created_at")
+
+  user                     User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider                 Provider      @relation(fields: [providerId], references: [id])
+  orderIntents             OrderIntent[]
+
+  @@map("broker_accounts")
+}
+
+model OrderIntent {
+  id                    String        @id @default(uuid())
+  userId                String        @map("user_id")
+  brokerAccountId       String        @map("broker_account_id")
+  instrumentId          String        @map("instrument_id")
+  side                  String        // BUY, SELL
+  quantity              Decimal       @db.Decimal(16, 4)
+  orderType             String        @map("order_type") // MARKET, LIMIT
+  limitPrice            Decimal?      @map("limit_price") @db.Decimal(16, 4)
+  validity              String        @default("DAY") // DAY, IOC
+  previewSnapshot       Json          @map("preview_snapshot") // Estimated cost, taxes, fees, warnings
+  confirmationTimestamp DateTime?     @map("confirmation_timestamp")
+  status                String        @default("DRAFT") // DRAFT, VALIDATED, PREVIEWED, CONFIRMED, REJECTED, CANCELLED
+  createdAt             DateTime      @default(now()) @map("created_at")
+
+  user                  User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  brokerAccount         BrokerAccount @relation(fields: [brokerAccountId], references: [id])
+  instrument            Instrument    @relation(fields: [instrumentId], references: [id])
+  brokerOrder           BrokerOrder?
+
+  @@index([userId, status])
+  @@map("order_intents")
+}
+
+model BrokerOrder {
+  id                   String          @id @default(uuid())
+  orderIntentId        String          @unique @map("order_intent_id")
+  providerOrderId      String?         @unique @map("provider_order_id")
+  idempotencyKey       String          @unique @map("idempotency_key")
+  submissionStatus     String          @map("submission_status") // SUBMITTED, ACKNOWLEDGED, PARTIALLY_FILLED, FILLED, REJECTED, CANCELLED, UNKNOWN
+  orderStatus          String          @map("order_status")
+  submittedAt          DateTime        @default(now()) @map("submitted_at")
+  lastProviderUpdateAt DateTime        @default(now()) @map("last_provider_update_at")
+  errorCode            String?         @map("error_code")
+
+  orderIntent          OrderIntent     @relation(fields: [orderIntentId], references: [id], onDelete: Cascade)
+  orderEvents          OrderEvent[]
+  executionFills       ExecutionFill[]
+
+  @@map("broker_orders")
+}
+
+model OrderEvent {
+  id               String      @id @default(uuid())
+  brokerOrderId    String      @map("broker_order_id")
+  providerEventId  String?     @map("provider_event_id")
+  eventType        String      @map("event_type")
+  eventTimestamp   DateTime    @map("event_timestamp")
+  ingestedAt       DateTime    @default(now()) @map("ingested_at")
+  payloadReference Json?       @map("payload_reference")
+  processedAt      DateTime?   @map("processed_at")
+
+  brokerOrder      BrokerOrder @relation(fields: [brokerOrderId], references: [id], onDelete: Cascade)
+
+  @@map("order_events")
+}
+
+model ExecutionFill {
+  id             String      @id @default(uuid())
+  brokerOrderId  String      @map("broker_order_id")
+  providerFillId String?     @map("provider_fill_id")
+  quantity       Decimal     @db.Decimal(16, 4)
+  price          Decimal     @db.Decimal(16, 4)
+  fees           Decimal     @default(0) @db.Decimal(16, 2)
+  currency       String      @default("INR")
+  executedAt     DateTime    @map("executed_at")
+
+  brokerOrder    BrokerOrder @relation(fields: [brokerOrderId], references: [id], onDelete: Cascade)
+
+  @@map("execution_fills")
+}
+
+// ----------------------------------------------------
+// 6. AI Assistant & Verified Knowledge Sources
+// ----------------------------------------------------
+
+model KnowledgeSource {
+  id             String           @id @default(uuid())
+  sourceType     String           @map("source_type") // SEBI_REGULATION, RBI_CIRCULAR, NSE_EDUCATION, AMFI_GUIDE, TAX_PROVISION
+  title          String
+  canonicalUrl   String           @map("canonical_url")
+  publisher      String
+  publishedAt    DateTime?        @map("published_at")
+  retrievedAt    DateTime         @default(now()) @map("retrieved_at")
+  licenseStatus  String           @default("OFFICIAL_PUBLIC") @map("license_status")
+  reviewStatus   String           @default("VERIFIED") @map("review_status")
+  contentVersion String           @default("1.0") @map("content_version")
+
+  chunks         KnowledgeChunk[]
+  citations      AssistantCitation[]
+
+  @@map("knowledge_sources")
+}
+
+model KnowledgeChunk {
+  id                String          @id @default(uuid())
+  knowledgeSourceId String          @map("knowledge_source_id")
+  chunkIndex        Int             @map("chunk_index")
+  topic             String
+  content           String          @db.Text
+  metadata          Json?
+
+  knowledgeSource   KnowledgeSource @relation(fields: [knowledgeSourceId], references: [id], onDelete: Cascade)
+
+  @@index([knowledgeSourceId, topic])
+  @@map("knowledge_chunks")
+}
+
+model AssistantConversation {
+  id        String             @id @default(uuid())
+  userId    String             @map("user_id")
+  mode      String             @default("educational") // educational, planning, market_information, personalized_advice
+  createdAt DateTime           @default(now()) @map("created_at")
+  updatedAt DateTime           @updatedAt @map("updated_at")
+
+  user      User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages  AssistantMessage[]
+
+  @@index([userId])
+  @@map("assistant_conversations")
+}
+
+model AssistantMessage {
+  id             String              @id @default(uuid())
+  conversationId String              @map("conversation_id")
+  role           String              // user, assistant, system
+  content        String              @db.Text
+  modelId        String              @default("clearvest-financial-v1") @map("model_id")
+  safetyStatus   String              @default("PASSED") @map("safety_status")
+  metadata       Json?               // assumptions, uncertain_fields, mode
+  createdAt      DateTime            @default(now()) @map("created_at")
+
+  conversation   AssistantConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  citations      AssistantCitation[]
+
+  @@index([conversationId])
+  @@map("assistant_messages")
+}
+
+model AssistantCitation {
+  id                         String          @id @default(uuid())
+  messageId                  String          @map("message_id")
+  knowledgeSourceId          String          @map("knowledge_source_id")
+  quotedOrReferencedSection  String          @map("quoted_or_referenced_section")
+  sourceVersion              String          @default("1.0") @map("source_version")
+  citationMetadata           Json?           @map("citation_metadata")
+
+  message                    AssistantMessage @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  knowledgeSource            KnowledgeSource @relation(fields: [knowledgeSourceId], references: [id])
+
+  @@index([messageId])
+  @@map("assistant_citations")
+}
+
+// ----------------------------------------------------
+// 7. Operations, Regulatory Feature Gates & Audit
+// ----------------------------------------------------
+
+model RegulatoryApproval {
+  id                   String   @id @default(uuid())
+  featureKey           String   @unique @map("feature_key") // e.g. "PERSONALIZED_SECURITIES_RECOMMENDATIONS", "LIVE_ORDER_EXECUTION", "ACCOUNT_AGGREGATOR_DATA_ACCESS"
+  jurisdiction         String   @default("IN")
+  applicableRegulation String   @map("applicable_regulation") // e.g. "SEBI (Investment Advisers) Regulations, 2013"
+  status               String   @default("disabled") // not_reviewed, review_required, partner_required, approval_pending, approved, disabled
+  officialSource       String   @map("official_source")
+  reviewedBy           String?  @map("reviewed_by")
+  reviewDate           DateTime? @map("review_date")
+  notes                String?  @db.Text
+  createdAt            DateTime @default(now()) @map("created_at")
+  updatedAt            DateTime @updatedAt @map("updated_at")
+
+  @@map("regulatory_approvals")
+}
+
+model AuditEvent {
+  id           String   @id @default(uuid())
+  userId       String?  @map("user_id")
+  action       String   // USER_LOGIN, GOAL_CREATED, SCENARIO_CALCULATED, CONSENT_GRANTED, CONSENT_REVOKED, ORDER_PREVIEWED, ORDER_SUBMITTED, DATA_EXPORT
+  resourceType String   @map("resource_type")
+  resourceId   String?  @map("resource_id")
+  ipAddress    String?  @map("ip_address")
+  details      Json?
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  user         User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId, action])
+  @@index([createdAt(sort: Desc)])
+  @@map("audit_events")
+}
+
+model IdempotencyRecord {
+  id              String   @id @default(uuid())
+  idempotencyKey  String   @unique @map("idempotency_key")
+  resourceType    String   @map("resource_type")
+  responsePayload Json     @map("response_payload")
+  status          String   @default("COMPLETED")
+  createdAt       DateTime @default(now()) @map("created_at")
+  expiresAt       DateTime @map("expires_at")
+
+  @@map("idempotency_records")
+}
