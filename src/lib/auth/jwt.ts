@@ -2,8 +2,19 @@ import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 import { NextRequest } from 'next/server';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'clearvest_dev_jwt_secret_key_needs_at_least_32_chars_2026';
-const secretKey = new TextEncoder().encode(JWT_SECRET);
+const DEV_FALLBACK_SECRET = 'clearvest_dev_jwt_secret_key_needs_at_least_32_chars_2026';
+
+// The fallback only applies outside production (local dev and tests).
+function getSigningSecret(): Uint8Array {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('JWT_SECRET must be set in production');
+    }
+    return new TextEncoder().encode(DEV_FALLBACK_SECRET);
+  }
+  return new TextEncoder().encode(secret);
+}
 
 export interface TokenPayload {
   userId: string;
@@ -15,12 +26,12 @@ export async function signSessionToken(payload: TokenPayload): Promise<string> {
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
     .setExpirationTime('7d')
-    .sign(secretKey);
+    .sign(getSigningSecret());
 }
 
 export async function verifySessionToken(token: string): Promise<TokenPayload | null> {
   try {
-    const { payload } = await jwtVerify(token, secretKey);
+    const { payload } = await jwtVerify(token, getSigningSecret());
     return {
       userId: payload.userId as string,
       email: payload.email as string,
