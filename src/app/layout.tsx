@@ -6,6 +6,14 @@ import { Footer } from '@/components/Footer';
 export const metadata: Metadata = {
   title: 'Clearvest — India-First, Goal-Driven Investing & Financial Intelligence',
   description: 'A transparent, goal-first financial intelligence platform for retail investors in India. Deterministic planning, source-grounded education, and verified insights.',
+  icons: {
+    icon: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico', sizes: '32x32' },
+    ],
+    shortcut: '/icon.svg',
+    apple: '/icon.svg',
+  },
 };
 
 export default function RootLayout({
